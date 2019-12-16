@@ -1,0 +1,43 @@
+{
+    "bam": [
+        {
+            "ip": "",
+            "name": "DNS_999_BAM_0001"
+        }
+    ],
+    "server_deployment_password": "",
+    "workflow_name": "gateway_nfv_plugin",
+    "bam_config_name": "DemoConfig",
+    "dns_view_names": [
+        "default"
+    ],
+    "udfs_for_server": [
+        {
+            "name": "can_scale_in",
+            "default_value": "true"
+        }
+    ],
+    "server_ssh_username": "root",
+    "server_ssh_password": "",
+    "server_cap_profile": "DNS_DHCP_SERVER_60",
+    "server_deploy_role": "RECURSION",
+    "server_dns_raw_option": [
+        "empty-zones-enable no;"
+    ],
+    "user_name": "gateway-user",
+    "gateway_address": "192.0.2.13:8000",
+    "secret_file": ".secret",
+    "secretkey_file": ".secretkey",
+    "interval": 2,
+    "sync_interval": 1,
+    "memcached_host": "192.0.2.11",
+    "memcached_port": 11211,
+    "k1_api":{
+        "address":"192.0.2.13",
+        "port":5555,
+        "uri":"/api/v1.0/srvo/instances/realtime_load"
+    },
+    "vm_host_ip":  "",
+    "vm_host_name": "VMHOST_0005",
+    "log_level":"DEBUG"
+}

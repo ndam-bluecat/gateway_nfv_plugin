@@ -1,0 +1,35 @@
+{
+  "common":{
+      "port":161,
+      "snmp_version": "v2c",
+      "snmp_community": "bcnCommunityV2C",
+      "user_name":"gateway-user",
+      "authen_protocol": "MD5",
+      "authen_password": "",
+      "priv_protocol":"AES",
+      "priv_password": ""
+  },
+  "bdds-88.88":{
+      "port":161,
+      "snmp_version": "v3",
+      "user_name":"gateway-user",
+      "authen_protocol": "MD5",
+      "authen_password": "",
+      "priv_protocol":"AES",
+      "priv_password": ""
+  },
+  "BAM_192.168.88.248":{
+      "port":161,
+      "snmp_version": "v2c",
+      "snmp_community": "bcnCommunityV2C"
+  },
+  "VMHOST_0005":{
+      "port":161,
+      "snmp_version": "v3",
+      "user_name":"gateway-user",
+      "authen_protocol": "MD5",
+      "authen_password": "",
+      "priv_protocol":"AES",
+      "priv_password": ""
+  }
+}
