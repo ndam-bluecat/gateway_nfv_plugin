@@ -19,6 +19,8 @@ import logging
 import time
 import sys
 
+from logging.handlers import RotatingFileHandler
+
 from common.constants import NFV_CONFIG_PATH  # pylint:disable=no-name-in-module,import-error
 
 from common.common import read_config_json_file, map_text_log_level # pylint:disable=no-name-in-module,import-error
@@ -80,7 +82,7 @@ class Logger(object):
         Create log
         """
         self._datetime = datetime.datetime.utcnow()
-        log_name = '{0}-{1}'.format(self.log_name, self._datetime.strftime(log_file_timestamp_format))
+        log_name = '{0}'.format(self.log_name)
         log_path = os.path.join(log_module_path, '%s.log' % (log_name))
         if not os.path.isfile(log_path):
             open(log_path, 'a').close()
@@ -92,7 +94,7 @@ class Logger(object):
         logger.setLevel(log_module_level)
         formatter = logging.Formatter(log_module_format, log_timestamp_format)
         formatter.converter = time.gmtime
-        handler = logging.FileHandler(log_path)
+        handler = RotatingFileHandler(log_path, maxBytes=20000000, backupCount=10)
         handler.setLevel(log_module_level)
         handler.setFormatter(formatter)
         logger.addHandler(handler)
