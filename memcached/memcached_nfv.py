@@ -85,6 +85,8 @@ class MemcachedNFV():
                 key = vm_host.get_memcache_key()
                 value = vm_host.get_memcache_value()
 
+            # Update to list server key
+            self.update_list_server_key(server_type, key)
             self.client.set(key, value)
             logging.info("Added {} to memcache".format(key))
         except Exception as exception:
@@ -152,24 +154,42 @@ class MemcachedNFV():
             logging.error("MemcachedNFV-Get_server-{}".format(exception))
             logging.error(traceback.format_exc())
 
+    def update_list_server_key(self, server_type, server_key, is_delete=False):
+        """[Update list server key by Server Type]
+        
+        Arguments:
+            server_type {[string]} -- [Server Type: BDDS, BAM, VM_HOST]
+            server_key {[String]} -- [Server key: BDDS|192.168.88.238|101554]
+        """
+        list_server_key = []
+        mem_list_server_key = self.client.get(server_type)
+        if mem_list_server_key:
+            list_server_key = mem_list_server_key.decode().split(',')
+
+        if is_delete and server_key in list_server_key:
+            # remove key if exist in memcached
+            list_server_key.remove(server_key)
+        elif not is_delete and server_key not in list_server_key:
+            # Add new key if not exist in memcached
+            list_server_key.append(server_key)
+
+        str_list_server_key = ",".join(list_server_key)
+        self.client.set(server_type, str_list_server_key)
+
     def get_list_server_keys(self):
         """[Get list server keys in memcache]
-            stats('cachedump', '<num_1>', '<num_2>'):
-                num_1: slab class id
-                    - slab_id 1: bytes from 1 to 37
-                    - slab_id 2: bytes from 38 to 61
-                    - slab_id 3: bytes from 62 to 85
-                    ...
-                num_2: number of items to dump
+            Get all server key in all server_type(BDDS, BAM, VM_HOST)
         Returns:
-            [dict_keys] -- [list keys server in memcache]
+            [list] -- [list keys server in memcache]
         """
-        memcache_keys = []
-        # Get keys from slab 1 to 5
-        for slab in range(0, 5):
-            keys_slab = self.client.stats('cachedump', str(slab + 1), '0')
-            memcache_keys += keys_slab
-        return memcache_keys
+        list_keys = []
+        list_sever_type = [ServerType.BDDS, ServerType.BAM, ServerType.VM_HOST]
+        # Get keys from ServerType
+        for type in list_sever_type:
+            str_keys_by_type = self.client.get(type)
+            if str_keys_by_type:
+                list_keys += str_keys_by_type.decode().split(",")
+        return list_keys
 
     def get_list_servers(self):
         """[summary]
@@ -183,20 +203,20 @@ class MemcachedNFV():
         list_bams = []
         list_vmhosts = []
         for key in keys:
-            if key.decode().split('|')[0] == ServerType.BDDS:
+            if key.split('|')[0] == ServerType.BDDS:
                 bdds = Bdds()
                 bdds.set_from_memcache(
-                    key.decode(), self.client.get(key).decode())
+                    key, self.client.get(key).decode())
                 list_bdds.append(bdds)
-            elif key.decode().split('|')[0] == ServerType.BAM:
+            elif key.split('|')[0] == ServerType.BAM:
                 bam = Bam()
                 bam.set_from_memcache(
-                    key.decode(), self.client.get(key).decode())
+                    key, self.client.get(key).decode())
                 list_bams.append(bam)
-            else:
+            elif key.split('|')[0] == ServerType.VM_HOST:
                 vm_host = VMHost()
                 vm_host.set_from_memcache(
-                    key.decode(), self.client.get(key).decode())
+                    key, self.client.get(key).decode())
                 list_vmhosts.append(vm_host)
         return list_bdds, list_bams, list_vmhosts
 
@@ -213,6 +233,7 @@ class MemcachedNFV():
             key = "{}|{}".format(server_type, server_id)
         try:
             self.client.delete(key)
+            self.update_list_server_key(server_type, key, is_delete=True)
             logging.info("Deleted {} in memcache".format(key))
         except Exception as exception:
             logging.error("MemcachedNFV-Delete_server-{}".format(exception))
