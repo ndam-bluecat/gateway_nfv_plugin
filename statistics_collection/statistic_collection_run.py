@@ -138,14 +138,13 @@ def get_snmp_server_config_name(config, name):
     return server_config_name
 
 
-def collect_statistics():
+def collect_statistics(mem_nfv):
     """
     :return: Array of statistic results
     """
     # Get server list from memcached
-    memcached_host, memcached_port = get_memcached_config()
-    mem_nfv = MemcachedNFV(memcached_host, memcached_port)
     list_bdds, list_bam, list_vmhosts = mem_nfv.get_list_servers()
+    
     logger.debug("List_bdds: {}\nList_bam: {}\nList_vmhost: {}".format(list_bdds, list_bam, list_vmhosts))
     snmp_config = read_config_json_file(SNMP_CONFIG_PATH)
     logger.debug("Snmp config: {}".format(snmp_config))
@@ -218,7 +217,12 @@ def scheduler_get_statistic_job():
     """
     Scheduler to get statistic job
     """
-    statistics = collect_statistics()
+    # init
+    memcached_host, memcached_port = get_memcached_config()
+    mem_nfv = MemcachedNFV(memcached_host, memcached_port)
+    statistics = collect_statistics(mem_nfv)
+    # Close 
+    mem_nfv.disconnect()
     logger.info('Get statistic: %s' % statistics)
 
 
