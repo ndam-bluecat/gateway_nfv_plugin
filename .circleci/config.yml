@@ -4,18 +4,18 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: ubuntu:18.04
+      - image: circleci/buildpack-deps:stretch
     steps:
         - attach_workspace:
             at: ~/repo
         - checkout
         - attach_workspace:
             at: ~/repo/gateway_nfv_plugin
-        - run:
-            name: Update and install required libraries.
-            command: |
-              apt-get update -q
-              apt-get install -y docker.io
+        # - run:
+        #     name: Update and install required libraries.
+        #     command: |
+        #       apt-get update -q
+        #       apt-get install -y docker.io
         - run:
             name: Build gateway_nfv_scheduler:${CIRCLE_BRANCH} image
             command: docker build -t gateway_nfv_scheduler:${CIRCLE_BRANCH} .
