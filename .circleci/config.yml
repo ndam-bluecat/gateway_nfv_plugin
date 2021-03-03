@@ -12,6 +12,11 @@ jobs:
         - attach_workspace:
             at: ~/repo/gateway_nfv_plugin
         - run:
+            name: Update and install required libraries.
+            command: |
+              apt-get update -q
+              apt-get install docker.io
+        - run:
             name: Build gateway_nfv_scheduler:${CIRCLE_TAG} image
             command: docker build -t gateway_nfv_scheduler:${CIRCLE_TAG} .
         - run:
