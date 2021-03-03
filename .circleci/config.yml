@@ -33,6 +33,10 @@ jobs:
               ls -la ~/repo
               cp -rf gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar.gz ~/repo/artifacts
               ls -la ~/repo/artifacts
+        - persist_to_workspace:
+            root: ~/repo
+            paths:
+              - artifacts
         - store_artifacts:
             path: ~/repo/artifacts
   release:
