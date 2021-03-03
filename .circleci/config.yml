@@ -44,17 +44,13 @@ workflows:
     jobs:
       - build:
           filters:
-            tags:
-              only: /^v.*/
             branches:
-              ignore: /.*/
+              only: circleci-project-setup
       - release:
           requires:
             - build
           context: github
           filters:
-            tags:
-              only: /^v.*/
             branches:
-              ignore: /.*/
+              only: circleci-project-setup
         
