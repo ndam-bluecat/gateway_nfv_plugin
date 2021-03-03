@@ -37,8 +37,6 @@ jobs:
             root: ~/repo
             paths:
               - artifacts
-        - store_artifacts:
-            path: ~/repo/artifacts
   release:
     docker:
     - image: circleci/golang:1.8
@@ -49,6 +47,7 @@ jobs:
           name: Compute version number
           command: |
             echo "Release ${CIRCLE_PROJECT_REPONAME}:${CIRCLE_BRANCH}"
+            ls -la ~/repo/
             ls -la ~/repo/artifacts
             # go get github.com/tcnksm/ghr
             # ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_BRANCH} ~/repo/artifacts/
