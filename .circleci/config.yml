@@ -26,6 +26,7 @@ jobs:
             name: Create a tar.gz file
             command: |
               echo "Package gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar.gz"
+              ls -la ~/repo
               mkdir -p ~/repo/artifacts
               tar -czvf gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar.gz gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar
               ls -la 
