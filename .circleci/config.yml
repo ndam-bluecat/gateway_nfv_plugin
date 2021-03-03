@@ -42,7 +42,7 @@ jobs:
     - image: circleci/golang:1.8
     steps:
       - attach_workspace:
-          at: .
+          at: ~/repo
       - run:
           name: Compute version number
           command: |
