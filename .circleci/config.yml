@@ -39,7 +39,7 @@ jobs:
               - artifacts
   release:
     docker:
-    - image: circleci/golang:1.8
+    - image: cibuilds/github:0.10
     steps:
       - attach_workspace:
           at: ~/repo
@@ -49,7 +49,6 @@ jobs:
             echo "Release ${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}"
             ls -la ~/repo/
             ls -la ~/repo/artifacts
-            go get github.com/tcnksm/ghr
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} ~/repo/artifacts/
 workflows:
   version: 2
