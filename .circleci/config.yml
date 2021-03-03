@@ -17,20 +17,20 @@ jobs:
               apt-get update -q
               apt-get install -y docker.io
         - run:
-            name: Build gateway_nfv_scheduler:${CIRCLE_TAG} image
-            command: docker build -t gateway_nfv_scheduler:${CIRCLE_TAG} .
+            name: Build gateway_nfv_scheduler:${CIRCLE_BRANCH} image
+            command: docker build -t gateway_nfv_scheduler:${CIRCLE_BRANCH} .
         - run:
-            name: Export gateway_nfv_scheduler:${CIRCLE_TAG} image
-            command: docker save -o gateway_nfv_scheduler_${CIRCLE_TAG}.tar gateway_nfv_scheduler:${CIRCLE_TAG}
+            name: Export gateway_nfv_scheduler:${CIRCLE_BRANCH} image
+            command: docker save -o gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar gateway_nfv_scheduler:${CIRCLE_BRANCH}
         - run:
             name: Create a tarball
-            command: tar -czvf gateway_nfv_scheduler_${CIRCLE_TAG}.tar.gz gateway_nfv_scheduler_${CIRCLE_TAG}.tar
+            command: tar -czvf gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar.gz gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar
         - persist_to_workspace:
             root: ./artifacts
             paths:
-              - gateway_nfv_scheduler_${CIRCLE_TAG}.tar.gz
+              - gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar.gz
         - store_artifacts:
-            path: gateway_nfv_scheduler_${CIRCLE_TAG}.tar.gz
+            path: gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar.gz
   release:
     docker:
     - image: circleci/golang:1.8
@@ -40,9 +40,9 @@ jobs:
       - run:
           name: Compute version number
           command: |
-            echo "Release ${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}"
+            echo "Release ${CIRCLE_PROJECT_REPONAME}:${CIRCLE_BRANCH}"
             go get github.com/tcnksm/ghr
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} ./artifacts/
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_BRANCH} ./artifacts/
 workflows:
   version: 2
   build-and-release:
