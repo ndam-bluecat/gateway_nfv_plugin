@@ -9,6 +9,7 @@ jobs:
         - attach_workspace:
             at: ~/repo
         - checkout
+        - setup_remote_docker
         - attach_workspace:
             at: ~/repo/gateway_nfv_plugin
         # - run:
