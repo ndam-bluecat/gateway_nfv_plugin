@@ -31,10 +31,8 @@ jobs:
               ls -la 
               ls -la ~/repo
               cp -rf gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar.gz ~/repo
-        - persist_to_workspace:
-            root: ~/repo/artifacts
-            paths:
-              - gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar.gz
+        - store_artifacts:
+            path: ~/repo/artifacts
   release:
     docker:
     - image: circleci/golang:1.8
