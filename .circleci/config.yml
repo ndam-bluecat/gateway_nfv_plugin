@@ -44,13 +44,17 @@ workflows:
     jobs:
       - build:
           filters:
+            tags:
+              only: /^v.*/
             branches:
-              only: master
+              ignore: /.*/
       - release:
           requires:
             - build
           context: github
           filters:
+            tags:
+              only: /^v.*/
             branches:
-              only: master
+              ignore: /.*/
         
