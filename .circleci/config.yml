@@ -30,7 +30,8 @@ jobs:
               tar -czvf gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar.gz gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar
               ls -la 
               ls -la ~/repo
-              cp -rf gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar.gz ~/repo
+              cp -rf gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar.gz ~/repo/artifacts
+              ls -la ~/repo/artifacts
         - store_artifacts:
             path: ~/repo/artifacts
   release:
@@ -57,7 +58,6 @@ workflows:
       - release:
           requires:
             - build
-          context: github
           filters:
             branches:
               only: circleci-project-setup
