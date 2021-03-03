@@ -18,7 +18,9 @@ jobs:
         #       apt-get install -y docker.io
         - run:
             name: Build gateway_nfv_scheduler:${CIRCLE_BRANCH} image
-            command: docker build -t gateway_nfv_scheduler:${CIRCLE_BRANCH} .
+            command: |
+              ls -la 
+              docker build -t gateway_nfv_scheduler:${CIRCLE_BRANCH} .
         - run:
             name: Export gateway_nfv_scheduler:${CIRCLE_BRANCH} image
             command: docker save -o gateway_nfv_scheduler_${CIRCLE_BRANCH}.tar gateway_nfv_scheduler:${CIRCLE_BRANCH}
