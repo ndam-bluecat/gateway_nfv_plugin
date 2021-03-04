@@ -49,8 +49,6 @@ jobs:
             echo "Release ${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}"
             ls -la ~/repo/
             ls -la ~/repo/artifacts
-            echo "${GITHUB_TOKEN}"
-            echo "${ACCESS_TOKEN}"
             ghr -debug -t ${ACCESS_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} ~/repo/artifacts/
 workflows:
   version: 2
