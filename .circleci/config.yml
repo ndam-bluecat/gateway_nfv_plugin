@@ -31,7 +31,7 @@ jobs:
               tar -czvf gateway_nfv_scheduler.tar.gz gateway_nfv_scheduler.tar
               ls -la 
               ls -la ~/repo
-              cp -rf gateway_nfv_scheduler_${CIRCLE_TAG}.tar.gz ~/repo/artifacts
+              cp -rf gateway_nfv_scheduler.tar.gz ~/repo/artifacts
               ls -la ~/repo/artifacts
         - persist_to_workspace:
             root: ~/repo
