@@ -1,7 +1,7 @@
-FROM ubuntu:20.04
+FROM ubuntu:18.04
 
 RUN apt-get update && \
-    apt-get install python3-pip -y
+    apt-get install python3.6 python3-pip -y
 
 COPY common /common/
 COPY memcached /memcached/
