@@ -7,8 +7,8 @@ Below is the architecture diagram:
 
 ## Requirements
 
-- BlueCat Gateway Version: 20.6.1 
-- BAM/BDDS Version: 9.1
+- BlueCat Gateway Version: 20.6.1
+- BAM/BDDS Version: 9.2
 
 ## Setup 
 ### BAM Setup
